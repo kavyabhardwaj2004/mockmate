@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GuideBotProvider } from "@/components/GuideBotContext";
+import GuideBot from "@/components/GuideBot";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -25,10 +28,45 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* 
+          Suppress HeyGen SDK "Session not found" unhandled rejections BEFORE
+          Next.js dev overlay installs its own unhandledrejection listener.
+          This script runs synchronously, so it wins the capture-phase race.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function suppressHeyGen(event) {
+                  var reason = event && event.reason;
+                  var msg = (reason && reason.message) ? reason.message : String(reason || '');
+                  if (
+                    msg.indexOf('Session not found') !== -1 ||
+                    msg.indexOf('session not found') !== -1 ||
+                    msg.indexOf('API request failed') !== -1 ||
+                    msg.indexOf('liveavatar') !== -1
+                  ) {
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    console.warn('[HeyGen suppressed]', msg);
+                  }
+                }
+                window.addEventListener('unhandledrejection', suppressHeyGen, true);
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <GoogleOAuthProvider clientId="423804055584-99lf1ia7l23fmtbsub4g5gcirp79hnli.apps.googleusercontent.com">
+          <GuideBotProvider>
+            {children}
+            <GuideBot />
+          </GuideBotProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );
