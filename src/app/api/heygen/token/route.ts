@@ -16,13 +16,25 @@ function resolveAvatarId(avatarKey?: string): string {
   return env.HEYGEN_AVATAR_JUNE_ID;
 }
 
+// Selects the per-avatar API key for Game of Fours (one key per avatar = 10 free credits each).
+// Falls back to HEYGEN_API_KEY_PANEL if no matching per-avatar key found.
+// Never changes the avatar_id — only the authentication key.
+function resolveApiKey(avatarKey?: string): string {
+  if (!avatarKey) return env.HEYGEN_API_KEY_HR;
+  const keyMap: Record<string, string> = {
+    june:       env.HEYGEN_API_KEY_JUNE,
+    bryan:      env.HEYGEN_API_KEY_BRYAN,
+    graham:     env.HEYGEN_API_KEY_GRAHAM,
+    alessandra: env.HEYGEN_API_KEY_ALESSANDRA,
+  };
+  return keyMap[avatarKey.toLowerCase()] || env.HEYGEN_API_KEY_PANEL;
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
     const avatarId = resolveAvatarId(body?.avatarKey || body?.avatar_id);
-
-    const isPanel = !!body?.avatarKey;
-    const apiKey = isPanel ? env.HEYGEN_API_KEY_PANEL : env.HEYGEN_API_KEY_HR;
+    const apiKey = resolveApiKey(body?.avatarKey);
 
     const response = await fetch("https://api.liveavatar.com/v1/sessions/token", {
       method: "POST",

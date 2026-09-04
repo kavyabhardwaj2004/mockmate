@@ -13,6 +13,11 @@ const serverEnvSchema = z.object({
   GROQ_API_KEY: z.string().optional(),
   HEYGEN_API_KEY_HR: z.string().min(1, "HeyGen HR API Key is required"),
   HEYGEN_API_KEY_PANEL: z.string().min(1, "HeyGen Panel API Key is required"),
+  // Per-avatar API keys for Game of Fours (10 free credits each)
+  HEYGEN_API_KEY_JUNE: z.string().min(1, "HeyGen June API Key is required"),
+  HEYGEN_API_KEY_BRYAN: z.string().min(1, "HeyGen Bryan API Key is required"),
+  HEYGEN_API_KEY_GRAHAM: z.string().min(1, "HeyGen Graham API Key is required"),
+  HEYGEN_API_KEY_ALESSANDRA: z.string().min(1, "HeyGen Alessandra API Key is required"),
   OPENAI_API_KEY: z.string().optional(),
   // HeyGen Avatar IDs
   HEYGEN_AVATAR_JUNE_ID: z.string().min(1, "HeyGen June Avatar ID is required"),
@@ -51,6 +56,10 @@ if (isServer) {
     GROQ_API_KEY: process.env.GROQ_API_KEY,
     HEYGEN_API_KEY_HR: process.env.HEYGEN_API_KEY_HR,
     HEYGEN_API_KEY_PANEL: process.env.HEYGEN_API_KEY_PANEL,
+    HEYGEN_API_KEY_JUNE: process.env.HEYGEN_API_KEY_JUNE,
+    HEYGEN_API_KEY_BRYAN: process.env.HEYGEN_API_KEY_BRYAN,
+    HEYGEN_API_KEY_GRAHAM: process.env.HEYGEN_API_KEY_GRAHAM,
+    HEYGEN_API_KEY_ALESSANDRA: process.env.HEYGEN_API_KEY_ALESSANDRA,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     HEYGEN_AVATAR_JUNE_ID: process.env.HEYGEN_AVATAR_JUNE_ID,
     HEYGEN_AVATAR_BRYAN_ID: process.env.HEYGEN_AVATAR_BRYAN_ID,
@@ -84,6 +93,10 @@ export const env = {
   | "GROQ_API_KEY"
   | "HEYGEN_API_KEY_HR"
   | "HEYGEN_API_KEY_PANEL"
+  | "HEYGEN_API_KEY_JUNE"
+  | "HEYGEN_API_KEY_BRYAN"
+  | "HEYGEN_API_KEY_GRAHAM"
+  | "HEYGEN_API_KEY_ALESSANDRA"
   | "OPENAI_API_KEY"
   | "HEYGEN_AVATAR_JUNE_ID"
   | "HEYGEN_AVATAR_BRYAN_ID"

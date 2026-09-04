@@ -10,7 +10,19 @@ import { DOMAIN_TOPICS, Topic } from '@/data/questionBank';
 import { Heart, Send, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const BANNED = ["stupid", "idiot", "shut up", "dumb", "useless", "nonsense", "bloody", "fuck", "foolish", "moron", "shut it", "rubbish", "trash", "hate this"];
+const BANNED = [
+  // Explicit offensive language
+  "stupid", "idiot", "shut up", "dumb", "useless", "nonsense", "bloody", "fuck",
+  "foolish", "moron", "shut it", "rubbish", "trash", "hate this",
+  // Flirty / romantic / suggestive (catches the "date" scenario)
+  "go on a date", "on a date", "let's date", "lets date", "let's go out", "lets go out",
+  "you're beautiful", "ur beautiful", "hey beautiful", "hey gorgeous", "hey sexy",
+  "you're hot", "ur hot", "you're cute", "ur cute",
+  "fall in love", "i love you", "kiss me", "hug me",
+  "boring questions", "way too boring", "way to boring", "too boring",
+  "not interested", "don't want to answer", "dont want to answer",
+  "rather not", "skip this", "i quit", "i give up", "this is pointless",
+];
 
 export default function InterviewPage() {
   const router = useRouter();
@@ -119,13 +131,30 @@ export default function InterviewPage() {
 
           if (parsed.violation) {
             const { behavioral_warnings: warnings } = useInterviewStore.getState();
+
+            // Record the score penalty regardless of warning count
+            addEvaluation({
+              topic: topics[topic_idx]?.topic || "Behavioral",
+              rating_total: 0,
+              dim_technical: 0,
+              dim_communication: 0,
+              dim_resume: 0,
+              impact_tech: -2.5,
+              impact_comm: -2.5,
+              impact_res: -2.5,
+              summary: "Behavioral violation — inappropriate or unprofessional conduct.",
+              missing_keywords: [],
+              detected_mistakes: ["Professional misconduct"]
+            });
+
             if (warnings === 0) {
+              // First violation: show warning, deduct life, stay on current question
               incrementBehavioralWarning();
               deductLife("Professional misconduct");
               setToastMessage("⚠️ WARNING: Inappropriate or unprofessional response detected.");
-              setTimeout(() => setToastMessage(null), 5000);
+              setTimeout(() => setToastMessage(null), 7000);
 
-              const reprimandText = parsed.interviewer_text || "That response is highly inappropriate. Let's keep this session strictly professional.";
+              const reprimandText = parsed.interviewer_text || "That response is highly inappropriate. Please maintain decorum and answer the question professionally.";
               const current = messagesRef.current;
               if (current.length > 0) {
                 setMessages([
@@ -136,6 +165,7 @@ export default function InterviewPage() {
               speakText(reprimandText);
               return;
             } else {
+              // Second violation: disqualify immediately
               endSession("Disqualified: Repeated Professional Misconduct.");
               return;
             }
