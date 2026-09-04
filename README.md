@@ -121,7 +121,7 @@ MockMate's flagship feature: A multi-interviewer executive panel interview simul
 <p align="center">
   <img src="./panel_interview.png" width="600" />
   <br/>
-  <em>Technical round and protraction</em>
+  <em>Game of Fours panel interview</em>
 </p>
 
 ### 6. 1-on-1 Agora Conversational AI Review & Mentor Mode
@@ -135,7 +135,7 @@ Post-interview deep dive on the panel results page (`/panel-result`):
 <p align="center">
   <img src="./review.png" width="600" />
   <br/>
-  <em>Technical round and protraction</em>
+  <em>Agora personalized interview feedback</em>
 </p>
 
 ### 7. Personalized Candidate Performance Dashboard
