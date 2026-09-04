@@ -77,6 +77,12 @@ MockMate was purpose-built to address the core requirements of next-generation c
 - **Secure Profile Extraction**: Extracts candidate name and email from Google JWT credentials and synchronizes session state with **Supabase Database & Auth**.
 - **Stateful Navigation**: Tracks past mock attempts (`mockmate_has_interviewed`) and routes returning users directly to their personalized dashboard.
 
+<p align="center">
+  <img src="./starting.jpeg" width="600" />
+  <br/>
+  <em>Welcome and google login</em>
+</p>
+
 ### 2. Interactive GuideBot Companion ("CuteBot")
 - **Persistent UI/UX Companion**: An animated, floating 3D bot that guides candidates across every page.
 - **Contextual Hover Tips**: Provides helpful explanations of recruiter expectations on mouse hover.
@@ -89,6 +95,12 @@ Designed for students targeting specific technical specializations (DSA, Web Dev
 - **3-Heart Life System**: Infractions (tab switching, looking away from the camera, multiple faces detected, unauthorized mobile device visible) deduct lives and issue warnings. Depleting all 3 lives terminates the session with an integrity penalty.
 - **Behavioral Tone & Slang Auditing**: Continuously audits spoken text for rude, entitled, flirty, or informal slang words, enforcing professional corporate communication.
 - **Response Delay Tracking**: Tracks answer response latency (`qElapsed`) to evaluate candidate hesitation and fluency under timed conditions.
+
+<p align="center">
+  <img src="./technical_round.png" width="600" />
+  <br/>
+  <em>Technical round and protraction</em>
+</p>
 
 ### 4. June HR Live Avatar Interview Round
 A dedicated 1-on-1 behavioral screening round with **June HR** (`/hr-interview`):
@@ -106,6 +118,12 @@ MockMate's flagship feature: A multi-interviewer executive panel interview simul
 - **Continuous Speech Recognition with Thinking Buffer**: Features a **5-second silence debounce buffer** using the Web Speech API. Candidates can take 2-3 seconds to pause and collect their thoughts without their answer being prematurely submitted.
 - **Keyword-Driven Speaker Routing**: Real-time answer analysis routes follow-ups dynamically to the most relevant expert.
 
+<p align="center">
+  <img src="./panel_interview.png" width="600" />
+  <br/>
+  <em>Technical round and protraction</em>
+</p>
+
 ### 6. 1-on-1 Agora Conversational AI Review & Mentor Mode
 Post-interview deep dive on the panel results page (`/panel-result`):
 - **Ultra-Low Latency Voice Intelligence**: Built on **Agora Conversational AI Agent v2 REST API & WebRTC RTC SDK** for natural, bidirectional voice conversation.
@@ -113,6 +131,12 @@ Post-interview deep dive on the panel results page (`/panel-result`):
 - **Evidence-Based Transcript Probing**: Mentors pull specific excerpts from the candidate's actual interview transcript, highlighting strengths and weaknesses.
 - **Parallel Connection Architecture**: The student WebRTC client and Agora agent join in parallel, delivering instant greeting speech via `greeting_message` with zero delay.
 - **Clean One-Click Session Teardown**: Integrated with Agora's `POST /projects/{appid}/agents/{agentId}/leave` endpoint to release agent resources immediately when "End Session" is clicked.
+
+<p align="center">
+  <img src="./review.png" width="600" />
+  <br/>
+  <em>Technical round and protraction</em>
+</p>
 
 ### 7. Personalized Candidate Performance Dashboard
 A comprehensive career analytics dashboard (`/dashboard`):
