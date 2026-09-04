@@ -2,8 +2,10 @@
 import { NextResponse } from 'next/server';
 import { callLLM } from '@/lib/llm';
 
+export const dynamic = 'force-dynamic';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const pdf = require('pdf-parse');
+const pdf = require('pdf-parse/lib/pdf-parse.js');
 
 export async function POST(req: Request) {
   try {
