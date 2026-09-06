@@ -270,9 +270,9 @@ export default function InterviewPage() {
     
     // Pick 3 technical questions
     const techQuestions = [...levelParams].sort(() => 0.5 - Math.random()).slice(0, 3);
-    // Pick 1 resume question
+    // Pick 2 unique resume questions (shuffled so they're always different)
     const resumeParams = DOMAIN_TOPICS["Resume"] ? DOMAIN_TOPICS["Resume"]["Beginner"] : [];
-    const resumeQuestions = [...resumeParams].sort(() => 0.5 - Math.random()).slice(0, 1);
+    const resumeQuestions = [...resumeParams].sort(() => 0.5 - Math.random()).slice(0, 2);
     
     // Q0 intro topic
     const Q0_Topic: Topic = {

@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 Never define concepts. Never teach. You evaluate only.
 Always return valid JSON matching the exact schema provided. No markdown. No extra text. No code fences.`;
 
-  const chatHistory = messages.slice(-5).map((m: any) => `${m.role === 'user' ? 'CANDIDATE' : 'INTERVIEWER'}: ${m.content}`).join('\n');
+  const chatHistory = messages.slice(-12).map((m: any) => `${m.role === 'user' ? 'CANDIDATE' : 'INTERVIEWER'}: ${m.content}`).join('\n');
   const nextQuestion = nextTopic?.core_question || null;
 
   const prompt = `### ACTIVE EVALUATION
@@ -45,9 +45,11 @@ NEXT TOPIC (transition reference only — do NOT reveal the topic name to studen
    - Final score = sum of (sub-score * weight / 100).
    - Map this final weighted score into the dimensions.
 
-### ANSWER VALIDATION & REPETITION PREVENTION (APPLY STRICTLY)
-- CRITICAL: Never repeat a question you just asked in the Chat History. If you notice the student's answer is an attempt (even if poor or partial) at the current topic, you MUST set move_on to true and proceed to the NEXT question.
-- Do NOT repeat the previous question if they made an attempt. Proceed with transition if move_on is true.
+### ANSWER VALIDATION & REPETITION PREVENTION (APPLY STRICTLY — NO EXCEPTIONS)
+- ABSOLUTE RULE: Scan the ENTIRE Chat History above. If your intended interviewer_text contains a question IDENTICAL or near-identical to ANY message already in the Chat History, you are FORBIDDEN from sending it. Set move_on: true and use the next core_question instead.
+- If the student has given ANY answer attempt (even poor, vague, or off-topic) to the current question, set move_on: true and advance to the next topic.
+- After a follow-up has been asked ONCE already (visible in Chat History), do NOT ask it again. Move on immediately.
+- NEVER use the word "elaborate" or ask them to "elaborate" more than once per topic.
 
 ### BEHAVIORAL RULES — READ CAREFULLY
 - NEVER say "Topic 1", "Next question", "Concept 2", or "Moving to next topic"
