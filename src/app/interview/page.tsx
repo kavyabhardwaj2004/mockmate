@@ -14,14 +14,20 @@ const BANNED = [
   // Explicit offensive language
   "stupid", "idiot", "shut up", "dumb", "useless", "nonsense", "bloody", "fuck",
   "foolish", "moron", "shut it", "rubbish", "trash", "hate this",
+  // Attacking questions / interview / dismissive / hostile
+  "pointless", "waste of time", "wasting time", "wasting my time", "stop asking",
+  "quit asking", "ridiculous question", "dumb question", "stupid question",
+  "useless question", "boring question", "way too boring", "way to boring", "too boring",
+  "not answering", "won't answer", "wont answer", "refuse to answer",
+  "don't want to answer", "dont want to answer", "not interested",
+  "why should i", "why would i", "leave me alone", "get lost",
+  "this is a joke", "who cares", "don't care", "dont care",
+  "rather not", "skip this", "i quit", "i give up", "this is pointless",
   // Flirty / romantic / suggestive (catches the "date" scenario)
   "go on a date", "on a date", "let's date", "lets date", "let's go out", "lets go out",
   "you're beautiful", "ur beautiful", "hey beautiful", "hey gorgeous", "hey sexy",
   "you're hot", "ur hot", "you're cute", "ur cute",
   "fall in love", "i love you", "kiss me", "hug me",
-  "boring questions", "way too boring", "way to boring", "too boring",
-  "not interested", "don't want to answer", "dont want to answer",
-  "rather not", "skip this", "i quit", "i give up", "this is pointless",
 ];
 
 export default function InterviewPage() {
@@ -151,7 +157,7 @@ export default function InterviewPage() {
               // First violation: show warning, deduct life, stay on current question
               incrementBehavioralWarning();
               deductLife("Professional misconduct");
-              setToastMessage("⚠️ WARNING: Inappropriate or unprofessional response detected.");
+              setToastMessage("⚠️ WARNING: Inappropriate or unprofessional response detected. 1 Life Lost!");
               setTimeout(() => setToastMessage(null), 7000);
 
               const reprimandText = parsed.interviewer_text || "That response is highly inappropriate. Please maintain decorum and answer the question professionally.";
@@ -366,13 +372,28 @@ export default function InterviewPage() {
 
     if (BANNED.some(w => input.toLowerCase().includes(w))) {
       const { behavioral_warnings: warnings } = useInterviewStore.getState();
+
+      addEvaluation({
+        topic: topics[topic_idx]?.topic || "Behavioral",
+        rating_total: 0,
+        dim_technical: 0,
+        dim_communication: 0,
+        dim_resume: 0,
+        impact_tech: -2.5,
+        impact_comm: -2.5,
+        impact_res: -2.5,
+        summary: "Behavioral violation — unprofessional conduct / hostile response.",
+        missing_keywords: [],
+        detected_mistakes: ["Professional misconduct"]
+      });
+
       if (warnings === 0) {
         incrementBehavioralWarning();
         deductLife("Professional misconduct");
-        setToastMessage("⚠️ WARNING: Professional misconduct/banned language detected.");
-        setTimeout(() => setToastMessage(null), 5000);
+        setToastMessage("⚠️ WARNING: Inappropriate or unprofessional response detected. 1 Life Lost!");
+        setTimeout(() => setToastMessage(null), 6000);
 
-        const reprimandText = "That language is highly unprofessional. Let's keep this session strictly professional. Please answer the question properly.";
+        const reprimandText = "That response is highly unprofessional and inappropriate. Please maintain decorum and answer the question properly.";
         const current = messagesRef.current;
         setMessages([
           ...current,
@@ -384,6 +405,7 @@ export default function InterviewPage() {
         handleInputChange({ target: { value: '' } } as any);
         return;
       } else {
+        deductLife("Repeated professional misconduct");
         endSession("Disqualified: Repeated Professional Misconduct.");
         return;
       }
